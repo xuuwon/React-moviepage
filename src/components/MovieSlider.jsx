@@ -26,7 +26,7 @@ export default function MovieSlider() {
   return (
     <div className="
       w-full sm:w-[600px] md:w-[700px] lg:w-[900px] xl:w-[1100px] 2xl:w-[1500px] h-[400px] 
-      mx-auto mt-[50px] pt-[50px] pl-[10px] border-b border-black"
+      mx-auto mt-[50px] pt-[10px] pl-[10px] border-b border-black"
     >
       <div>
         <Swiper
@@ -61,8 +61,8 @@ export default function MovieSlider() {
 
             return (
               <SwiperSlide key={data.id}>
-                <div className="w-[200px] h-[300px] border border-black" onClick={handleClick}>
-                  <img src={posterUrl} style={{ width: '100%', height: '270px' }} />
+                <div className="w-[200px] h-[350px] border border-black" onClick={handleClick}>
+                  <img src={posterUrl} style={{ width: '100%', height: '270px'}} />
                   <p>{data.title}</p>
                   <p>평점: {data.vote_average}</p>
                 </div>
