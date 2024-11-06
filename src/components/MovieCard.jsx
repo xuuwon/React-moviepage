@@ -10,10 +10,10 @@ export default function MovieCard ({ movieListData }) {
     };
 
     return (
-        <div className="movieCard" onClick={handleClick}>
-            <img src={posterUrl} style={{width: '100%', height: '270px'}}/>
-            <p>{movieListData.title}</p>
-            <p>평점: {movieListData.vote_average}</p>
+        <div className="movieCard hover:scale-105 ease-in duration-100 rounded-2xl" onClick={handleClick}>
+            <img src={posterUrl} className="w-full h-[270px] rounded-t-2xl"/>
+            <p className="pl-[7px] pr-[7px]">{movieListData.title}</p>
+            <p className="pl-[7px]">평점: {movieListData.vote_average}</p>
         </div>
     )
 }

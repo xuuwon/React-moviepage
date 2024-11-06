@@ -3,6 +3,7 @@ import 'swiper/swiper-bundle.min.css'; // Swiper 6.x에서 필요한 CSS 파일
 import SwiperCore, { Navigation } from 'swiper';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import '../App.scss'
 
 // Swiper에 Navigation 모듈을 추가합니다
 SwiperCore.use([Navigation]);
@@ -25,13 +26,17 @@ export default function MovieSlider() {
 
   return (
     <div className="
-      w-full sm:w-[600px] md:w-[700px] lg:w-[900px] xl:w-[1100px] 2xl:w-[1500px] h-[400px] 
-      mx-auto mt-[50px] pt-[10px] pl-[10px] border-b border-black"
+      w-[300px] sm:w-[600px] md:w-[700px] lg:w-[900px] xl:w-[1100px] 2xl:w-[1500px] h-[400px] 
+      mx-auto mt-[30px] pt-[10px]
+      border-b border-[rgb(224, 224, 224)]"
     >
       <div>
         <Swiper
-          spaceBetween={20}
+          spaceBetween={45}
           breakpoints={{
+            0: {
+              slidesPerView: 1
+            },
             // 크기가 sm 이상일 때
             640: {
               slidesPerView: 2,
@@ -60,11 +65,11 @@ export default function MovieSlider() {
             const posterUrl = `https://image.tmdb.org/t/p/w500${data.poster_path}`;
 
             return (
-              <SwiperSlide key={data.id}>
-                <div className="w-[200px] h-[350px] border border-black" onClick={handleClick}>
-                  <img src={posterUrl} style={{ width: '100%', height: '270px'}} />
-                  <p>{data.title}</p>
-                  <p>평점: {data.vote_average}</p>
+              <SwiperSlide key={data.id} className='hover:drop-shadow-xl'>
+                <div className="w-[200px] h-[370px] border border-[rgb(168, 168, 168)] rounded-2xl slideCard" onClick={handleClick}>
+                  <img src={posterUrl} className='slideimg rounded-t-2xl' />
+                  <p className='pl-[7px] pr-[7px] pt-2'>{data.title}</p>
+                  <p className='pl-[7px] pt-2'>평점: {data.vote_average}</p>
                 </div>
               </SwiperSlide>
             )

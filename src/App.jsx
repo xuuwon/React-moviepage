@@ -8,15 +8,15 @@ import MovieSlider from './components/MovieSlider';
 
 function App() {
   const [movieListDatas, setMovieListDatas] = useState([]);
-  const [vw, setVw] = useState(window.innerWidth / 100);
+  // const [vw, setVw] = useState(window.innerWidth / 100);
 
-  useEffect(() => {
-    const handleResize = () => setVw(window.innerWidth / 100);
+  // useEffect(() => {
+  //   const handleResize = () => setVw(window.innerWidth / 100);
 
-    window.addEventListener('resize', handleResize);
+  //   window.addEventListener('resize', handleResize);
 
-    return () => window.removeEventListener('resize', handleResize);
-  }, [])
+  //   return () => window.removeEventListener('resize', handleResize);
+  // }, [])
 
   useEffect(() => {
     fetch('http://localhost:3000/results')
@@ -27,29 +27,20 @@ function App() {
 
   return (
     <div>
-      {vw > 6.52 ? (
-        <div>
-          <MovieSlider />
-          <div style={{
+        <div className='main'>
+          <MovieSlider movieListDatas={movieListDatas} />
+          <div className='cards' style={{
             display: 'flex',
             flexWrap: 'wrap',
             gap: '20px',
             justifyContent: 'space-around',
-            marginTop: '50px',
-            marginBottom: '50px'
+            padding: '40px'
           }}>
             {movieListDatas.map((movieListData) => (
               <MovieCard key={movieListData.id} movieListData={movieListData} />
             ))}
           </div>
         </div>
-      ) : (
-        <div className="flex flex-col gap-[10px] justify-center items-center min-h-screen">
-          {/* min-h-screen은 Tailwind CSS에서 화면의 전체 높이를 차지하도록 설정하여, 콘텐츠가 세로로도 중앙에 올 수 있도록 함 */}
-          <p>화면의 크기가 너무 작습니다.</p>
-          <p>화면의 크기를 키워주세요.</p>
-        </div>
-      )}
     </div>
   );
 }
