@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    width: 80%;
+    margin: auto;
+    height: 100vh;
+    display: flex;
+    align-items: start;
+    justify-content: center;
+    overflow-y: auto; /* 수직 스크롤 추가 */
+}

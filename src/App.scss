@@ -1,0 +1,14 @@
+p {
+  margin: 0;
+  padding: 0;
+}
+
+.movieCard {
+  width: 200px;
+  height: 360px;
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  gap: 10px;
+}
