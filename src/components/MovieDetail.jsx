@@ -11,7 +11,7 @@ export default function MovieDetail() {
     const backdropUrl = `https://image.tmdb.org/t/p/w500${movieDetailData.backdrop_path}`;
 
     return (
-        <div className="w-[100vw] bg-slate-200 flex justify-center pb-[50px]">
+        <div className="w-[100vw] bg-[#e1e1e1] flex justify-center pb-[50px]">
             <div className="w-[85%] flex flex-col lg:flex-row items-center gap-[50px] mt-[50px]">
                 <img src={posterUrl} className='w-[400px]' />
                 <div className="flex flex-col gap-[50px]">

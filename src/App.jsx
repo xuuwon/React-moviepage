@@ -8,15 +8,6 @@ import MovieSlider from './components/MovieSlider';
 
 function App() {
   const [movieListDatas, setMovieListDatas] = useState([]);
-  // const [vw, setVw] = useState(window.innerWidth / 100);
-
-  // useEffect(() => {
-  //   const handleResize = () => setVw(window.innerWidth / 100);
-
-  //   window.addEventListener('resize', handleResize);
-
-  //   return () => window.removeEventListener('resize', handleResize);
-  // }, [])
 
   useEffect(() => {
     fetch('http://localhost:3000/results')

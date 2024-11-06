@@ -1,4 +1,3 @@
-// MainRouter.js
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import App from './App';               // App은 홈 페이지로 사용
 import MovieDetail from './components/MovieDetail';

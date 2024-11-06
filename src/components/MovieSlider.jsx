@@ -4,19 +4,12 @@ import SwiperCore, { Navigation } from 'swiper';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../App.scss'
+import SliderCard from './SliderCard';
 
 // Swiper에 Navigation 모듈을 추가합니다
 SwiperCore.use([Navigation]);
 
-export default function MovieSlider() {
-  const [movieListDatas, setMovieListDatas] = useState([]);
-
-  useEffect(() => {
-    fetch('http://localhost:3000/results')
-      .then(res => res.json())
-      .then(res => setMovieListDatas(res))
-  }, [])
-
+export default function MovieSlider({ movieListDatas }) {
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -26,13 +19,13 @@ export default function MovieSlider() {
 
   return (
     <div className="
-      w-[300px] sm:w-[600px] md:w-[700px] lg:w-[900px] xl:w-[1100px] 2xl:w-[1500px] h-[400px] 
+      w-[300px] sm:w-[600px] md:w-[700px] lg:w-[900px] xl:w-[1100px] 2xl:w-[1500px] h-[450px] 
       mx-auto mt-[30px] pt-[10px]
       border-b border-[rgb(224, 224, 224)]"
     >
       <div>
         <Swiper
-          spaceBetween={45}
+          spaceBetween={10}
           breakpoints={{
             0: {
               slidesPerView: 1
@@ -59,18 +52,12 @@ export default function MovieSlider() {
             }
           }}
           navigation // 네비게이션 버튼 활성화
-          className='w-full h-full'
+          className='w-full h-full overflow-visible'
         >
-          {movieListDatas.map((data) => {
-            const posterUrl = `https://image.tmdb.org/t/p/w500${data.poster_path}`;
-
+          {movieListDatas.map((movieListData) => {
             return (
-              <SwiperSlide key={data.id} className='hover:drop-shadow-xl'>
-                <div className="w-[200px] h-[370px] border border-[rgb(168, 168, 168)] rounded-2xl slideCard" onClick={handleClick}>
-                  <img src={posterUrl} className='slideimg rounded-t-2xl' />
-                  <p className='pl-[7px] pr-[7px] pt-2'>{data.title}</p>
-                  <p className='pl-[7px] pt-2'>평점: {data.vote_average}</p>
-                </div>
+              <SwiperSlide key={movieListData.id} className='hover:drop-shadow-xl xs:p-3'>
+                <SliderCard movieListData={movieListData} />
               </SwiperSlide>
             )
           })}
