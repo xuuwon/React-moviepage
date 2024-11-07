@@ -7,7 +7,7 @@ export default {
   theme: {
     extend: {
       screens: {
-        xs: '500px', // 500px 이상일 때 xs 클래스를 사용 가능
+        xs: '640px', // 500px 이상일 때 xs 클래스를 사용 가능
       },
     },
   },
