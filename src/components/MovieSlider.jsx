@@ -10,12 +10,6 @@ import SliderCard from './SliderCard';
 SwiperCore.use([Navigation]);
 
 export default function MovieSlider({ movieListDatas }) {
-  const navigate = useNavigate();
-
-  const handleClick = () => {
-    // /details 페이지로 이동
-    navigate('/details');
-  };
 
   return (
     <div className="
@@ -56,7 +50,7 @@ export default function MovieSlider({ movieListDatas }) {
         >
           {movieListDatas.map((movieListData) => {
             return (
-              <SwiperSlide key={movieListData.id} className='hover:drop-shadow-xl xs:p-3'>
+              <SwiperSlide key={movieListData.id} className='hover:drop-shadow-xl xs:p-2'>
                 <SliderCard movieListData={movieListData} />
               </SwiperSlide>
             )

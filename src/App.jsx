@@ -5,15 +5,16 @@ import './App.scss'
 import MovieCard from './components/MovieCard';
 import './index.css';
 import MovieSlider from './components/MovieSlider';
+import movieListData from '../data/movieListData.json'
 
 function App() {
-  const [movieListDatas, setMovieListDatas] = useState([]);
+  const [movieListDatas] = useState(movieListData.results);
 
-  useEffect(() => {
-    fetch('http://localhost:3000/results')
-      .then(res => res.json())
-      .then(res => setMovieListDatas(res))
-  }, [])
+  // useEffect(() => {
+  //   fetch('http://localhost:3000/results')
+  //     .then(res => res.json())
+  //     .then(res => setMovieListDatas(res))
+  // }, [])
 
 
   return (

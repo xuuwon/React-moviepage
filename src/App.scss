@@ -50,6 +50,14 @@ p {
 }
 
 .slideCard {
+  width: 200px;
+  height: 380px;
+  border: 1px solid rgb(214, 214, 214);
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  gap: 10px;
+
   img {
     width: 200px;
     height: 270px;
@@ -74,7 +82,7 @@ p {
 
 .ozMovieText {
   @media (max-width: 500px) {
-    font-size: 20px !important;
+    font-size: 25px !important;
   }
 
   font-family: 'CWDangamAsac-Bold', sans-serif;
