@@ -52,6 +52,12 @@ p {
   padding: 0;
 }
 
+.detailMain, .main {
+  @media (max-width: 500px) {
+    padding-top: 100px !important;
+  }
+}
+
 .popularText {
   @media (max-width: 450px) {
     font-size: 20px !important;

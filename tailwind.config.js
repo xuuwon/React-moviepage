@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+import { IMG_BASE_URL } from '../../config.js'
+
 export default {
   content: [
     "./index.html",

@@ -4,6 +4,7 @@ import SwiperCore, { Autoplay, Navigation } from 'swiper';
 import { useEffect, useState } from 'react';
 import '../App.scss'
 import SliderCard from './SliderCard';
+import { BASE_URL, API_READ_ACCESS_TOKEN } from '../../config.js'
 
 // Swiper에 모듈을 추가합니다
 SwiperCore.use([Navigation]);
@@ -11,12 +12,17 @@ SwiperCore.use([Autoplay]);
 
 export default function MovieSlider() {
   const [movieListDatas, setMovieListDatas] = useState([]);
-  const apiKey = import.meta.env.VITE_TMDB_API_KEY;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`https://api.themoviedb.org/3/movie/top_rated?api_key=${apiKey}&language=ko-KR`)
+        const response = await fetch(`${BASE_URL}/movie/top_rated?language=ko-KR`, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${API_READ_ACCESS_TOKEN}`,
+                accept: 'application/json',
+            },
+        })
         const data = await response.json()
 
         setMovieListDatas(data.results)

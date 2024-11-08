@@ -3,7 +3,7 @@ import '../App.scss'
 import Hamburger from "./Hamburger";
 import { useEffect, useState } from "react";
 
-export default function Header ({ isStyle }) {
+export default function NavBar ({ isStyle }) {
     const navigate = useNavigate();
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
     // 처음 렌더링 될 때 자꾸 햄버거 생김
@@ -20,7 +20,9 @@ export default function Header ({ isStyle }) {
 
     return (
         <div 
-            className="w-[100vw] h-[100px] xs:h-[200px] border bg-black flex items-center text-white justify-between px-9"
+            className="w-[100vw] h-[100px] xs:h-[200px] border bg-black 
+                flex items-center text-white justify-between px-9 
+                fixed top-0 left-0 z-10"
             style={isStyle ? {marginRight: '5px'} : {}}
         >
             <p className="text-[35px] ozMovieText" 

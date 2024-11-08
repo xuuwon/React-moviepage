@@ -2,20 +2,22 @@ import { useEffect, useState } from "react";
 import MovieSlider from "./MovieSlider";
 import MovieCard from "./MovieCard";
 import '../App.scss';
+import { BASE_URL, API_READ_ACCESS_TOKEN } from '../../config.js'
 
 export default function Main() {
-    const apiKey = import.meta.env.VITE_TMDB_API_KEY;
     const [movieListDatas, setMovieListDatas] = useState([]);
     const [page, setPage] = useState(1); // 페이지 수
 
     useEffect(() => {
-        // fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}`)
-        //     .then(res => res.json())
-        //     .then(res => setMovieListDatas(res.results)) // results 키에 접근
-
         const fetchData = async () => {
             try {
-                const response = await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&page=${page}&language=ko-KR`)
+                const response = await fetch(`${BASE_URL}/movie/popular?language=ko-KR&page=${page}`, {
+                    method: 'GET',
+                    headers: {
+                        Authorization: `Bearer ${API_READ_ACCESS_TOKEN}`,
+                        accept: 'application/json',
+                    },
+                })
                 const data = await response.json()
 
                 if (page === 1) {
@@ -33,7 +35,7 @@ export default function Main() {
 
     return (
         <div>
-            <div className='main'>
+            <div className='main pt-[200px]'>
                 <MovieSlider movieListDatas={movieListDatas} />
                 <div className="w-[90%] mx-auto mt-10 text-[30px] popularText">인기순</div>
                 <div className='cards' style={{
