@@ -37,14 +37,22 @@ export default function MovieDetail() {
     const posterUrl = `${IMG_BASE_URL}${movieDetailDatas.poster_path}`;
     const backdropUrl = `${IMG_BASE_URL}${movieDetailDatas.backdrop_path}`;
 
+    const backgroundStyle = {
+        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(${backdropUrl})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center'
+    };
+
     return (
-        <div className="w-[100vw] bg-[#e1e1e1] flex justify-center pb-[50px] pt-[200px] detailMain">
-            <div className="w-[85%] flex flex-col lg:flex-row items-center gap-[50px] mt-[50px]">
+        <div className="w-[100vw] flex justify-center pb-[50px] pt-[100px] detailMain"
+            style={backgroundStyle}
+        >
+            <div className="w-[85%] flex flex-col lg:flex-row items-center gap-[50px] mt-[50px] text-white">
                 <img src={posterUrl} className='w-[400px]' />
                 <div className="flex flex-col gap-[50px]">
-                    <div className="flex gap-[30px] items-center">
+                    <div className="flex flex-col xs:flex-row gap-[30px] items-center">
                         <p className="text-[30px] font-black">{movieDetailDatas.title}</p>
-                        <p>평점: {movieDetailDatas.vote_average}</p>
+                        <p>⭐ {movieDetailDatas.vote_average}</p>
                     </div>
                     <div>
                         장르:

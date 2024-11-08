@@ -3,8 +3,9 @@ import MovieSlider from "./MovieSlider";
 import MovieCard from "./MovieCard";
 import '../App.scss';
 import { BASE_URL, API_READ_ACCESS_TOKEN } from '../../config.js'
+import MovieNowPlaying from "./MovieNowPlaying.jsx";
 
-export default function Main() {
+export default function Main({ isDark }) {
     const [movieListDatas, setMovieListDatas] = useState([]);
     const [page, setPage] = useState(1); // 페이지 수
 
@@ -35,7 +36,10 @@ export default function Main() {
 
     return (
         <div>
-            <div className='main pt-[200px]'>
+            <div className={`main pt-[100px]
+                ${isDark ? "dark" : ""}
+            `}>
+                <MovieNowPlaying />
                 <MovieSlider movieListDatas={movieListDatas} />
                 <div className="w-[90%] mx-auto mt-10 text-[30px] popularText">인기순</div>
                 <div className='cards' style={{
@@ -49,10 +53,10 @@ export default function Main() {
                     <MovieCard key={movieListData.id} movieListData={movieListData} />
                 ))}
                 </div>
-                <div className="flex justify-center mb-10">
+                <div className="flex justify-center pb-10">
                     <button 
                         onClick={() => setPage(prev => prev + 1)}
-                        className="w-[80%] h-[50px] bg-[black] text-white rounded-2xl addBtn"
+                        className="w-[80%] h-[60px] bg-[#051014] text-white rounded-2xl addBtn"
                     >더보기</button>
                 </div>
             </div>

@@ -2,13 +2,12 @@ import { useEffect, useState } from "react"
 import '../App.scss';
 import '../index.css';
 
-export default function Signup ({ setIsStyle }) {
+export default function Signup({ setIsStyle, isDark }) {
     useEffect(() => {
-        setIsStyle(true); // ComponentA가 렌더링되면 스타일 적용
-    
-        return () => setIsStyle(false); // 컴포넌트가 사라질 때 스타일 제거
-    }, [setIsStyle]);
+        setIsStyle(true);
 
+        return () => setIsStyle(false);
+    }, [setIsStyle]);
 
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
@@ -17,45 +16,47 @@ export default function Signup ({ setIsStyle }) {
 
 
     return (
-        <div className="w-full h-[calc(100vh-200px)] flex flex-col items-center justify-center gap-[50px] signup">
-            <p className="text-[35px]">Sign Up</p>
+        <div className={`w-[100vw] h-[100vh] flex flex-col items-center justify-center gap-[40px] signup
+            ${isDark ? "dark" : ""}`
+        }>
+            <p className="text-[35px] loginText pb-4">Sign Up</p>
             <div>
-                <p>Name</p>
-                <input 
-                    type="text" 
-                    value={name} 
-                    onChange={(e) => setName(e.target.value)} 
-                    className="w-[400px] h-[30px] border border-black"
+                <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="w-[400px] h-[40px] outline-none border border-b-[#9ca0a0] pl-5"
+                    placeholder="Name"
                 />
             </div>
             <div>
-                <p>Email</p>
-                <input 
-                    type="email" 
-                    value={email} 
-                    onChange={(e) => setEmail(e.target.value)} 
-                    className="w-[400px] h-[30px] border border-black"
+                <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-[400px] h-[40px] outline-none border border-b-[#9ca0a0] pl-5"
+                    placeholder="Email"
                 />
             </div>
             <div>
-                <p>Password</p>
-                <input 
-                    type="password" 
-                    value={password} 
-                    onChange={(e) => setPassword(e.target.value)} 
-                    className="w-[400px] h-[30px] border border-black"
+                <input
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="w-[400px] h-[40px] outline-none border border-b-[#9ca0a0] pl-5"
+                    placeholder="Password"
                 />
             </div>
             <div>
-                <p>Confirm Password</p>
-                <input 
-                    type="password" 
-                    value={confirmPassword} 
-                    onChange={(e) => setConfirmPassword(e.target.value)} 
-                    className="w-[400px] h-[30px] border border-black"
+                <input
+                    type="password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    className="w-[400px] h-[40px] outline-none border border-b-[#9ca0a0] pl-5"
+                    placeholder="Confirm Password"
                 />
             </div>
-            <button className="w-[400px] h-[40px] border border-black">Sign Up</button>
+            <button className="w-[400px] h-[40px] text-white bg-[#2E2F2F]">Sign Up</button>
         </div>
     )
 }

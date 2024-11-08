@@ -25,7 +25,12 @@ export default function MovieSlider() {
         })
         const data = await response.json()
 
-        setMovieListDatas(data.results)
+        // 순위를 추가하여 배열 업데이트
+        const rankedData = data.results.map((movie, idx) => {
+          return { ...movie, ranking: idx + 1 }; // 인덱스는 0부터 시작하므로 +1
+        });
+
+        setMovieListDatas(rankedData)
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -34,15 +39,14 @@ export default function MovieSlider() {
     fetchData();
   }, []) 
 
-
   return (
     <div className="
-      w-[300px] sm:w-[600px] md:w-[700px] lg:w-[900px] xl:w-[1100px] 2xl:w-[1500px] h-[500px] 
+      w-[300px] sm:w-[600px] md:w-[700px] lg:w-[900px] xl:w-[1100px] 2xl:w-[1500px] h-[550px] xs:h-[500px] 
       mx-auto mt-[30px] pt-[10px]
       border-b border-[rgb(224, 224, 224)]"
     >
       <div>
-        <p className='text-[30px] mb-2 sliderText'>Top 20</p>
+        <p className='text-[40px] mb-2 sliderText'>Top 20</p>
         <Swiper
           spaceBetween={10}
           breakpoints={{
@@ -80,7 +84,7 @@ export default function MovieSlider() {
         >
           {movieListDatas.map((movieListData) => {
             return (
-              <SwiperSlide key={movieListData.id} className='hover:drop-shadow-xl xs:p-2'>
+              <SwiperSlide key={movieListData.id} className='hover:drop-shadow-xl xs:p-2 mt-5'>
                 <SliderCard movieListData={movieListData} />
               </SwiperSlide>
             )
