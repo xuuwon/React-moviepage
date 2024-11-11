@@ -4,7 +4,7 @@ import SwiperCore, { Autoplay, Navigation } from 'swiper';
 import { useEffect, useState } from 'react';
 import '../App.scss'
 import SliderCard from './SliderCard';
-import { BASE_URL, API_READ_ACCESS_TOKEN } from '../../config.js'
+import useFetch from '../hooks/useFetch.js';
 
 // Swiper에 모듈을 추가합니다
 SwiperCore.use([Navigation]);
@@ -13,31 +13,20 @@ SwiperCore.use([Autoplay]);
 export default function MovieSlider() {
   const [movieListDatas, setMovieListDatas] = useState([]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`${BASE_URL}/movie/top_rated?language=ko-KR`, {
-            method: 'GET',
-            headers: {
-                Authorization: `Bearer ${API_READ_ACCESS_TOKEN}`,
-                accept: 'application/json',
-            },
-        })
-        const data = await response.json()
+  const { data, loading, error } = useFetch(`/movie/top_rated?language=ko-KR`)
 
-        // 순위를 추가하여 배열 업데이트
-        const rankedData = data.results.map((movie, idx) => {
-          return { ...movie, ranking: idx + 1 }; // 인덱스는 0부터 시작하므로 +1
-        });
-
-        setMovieListDatas(rankedData)
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
+  useEffect(() => { // useFetch로 데이터를 받아온 후 useEffect 실행
+    if (data.results) {
+      const rankedData = data.results.map((movie, idx) => ({
+        ...movie,
+        ranking: idx + 1, // 순위를 추가
+      }));
+      setMovieListDatas(rankedData);
     }
+  }, [data]);
 
-    fetchData();
-  }, []) 
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error loading data</p>;
 
   return (
     <div className="

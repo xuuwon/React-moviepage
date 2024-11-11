@@ -2,37 +2,20 @@ import { useEffect, useState } from "react";
 import MovieSlider from "./MovieSlider";
 import MovieCard from "./MovieCard";
 import '../App.scss';
-import { BASE_URL, API_READ_ACCESS_TOKEN } from '../../config.js'
 import MovieNowPlaying from "./MovieNowPlaying.jsx";
+import useFetch from "../hooks/useFetch.js";
 
 export default function Main({ isDark }) {
-    const [movieListDatas, setMovieListDatas] = useState([]);
     const [page, setPage] = useState(1); // 페이지 수
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch(`${BASE_URL}/movie/popular?language=ko-KR&page=${page}`, {
-                    method: 'GET',
-                    headers: {
-                        Authorization: `Bearer ${API_READ_ACCESS_TOKEN}`,
-                        accept: 'application/json',
-                    },
-                })
-                const data = await response.json()
+    const { data } = useFetch(
+        `/movie/popular?language=ko-KR`, 
+        page
+    );
 
-                if (page === 1) {
-                    setMovieListDatas(data.results)
-                } else {
-                    setMovieListDatas((prev) => [...prev, ...data.results])
-                }
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        }
+    const movieListDatas = data.results || []
 
-        fetchData();
-    }, [page]) // page 수가 바뀔 때마다 데이터 더 불러오기
+    console.log(movieListDatas.filter(data => data.overview === ''))
 
     return (
         <div>

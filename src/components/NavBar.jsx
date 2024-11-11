@@ -5,13 +5,16 @@ import Search from "./Search";
 import sun from '../image/sun.png'
 import moon from '../image/moon.png'
 import search from '../image/whiteSearch.png'
+import user from '../image/user.png'
+import Menu from "./Menu";
 
-export default function NavBar ({ isStyle, isDark, setIsDark }) {
+export default function NavBar ({ isStyle, isDark, setIsDark, isLogin, setIsLogin }) {
     const navigate = useNavigate();
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-    // 처음 렌더링 될 때 자꾸 햄버거 생김
     const [onSearch, setOnSearch] = useState(false);
-    const [isVisible, setIsVisible] = useState(false); // 언마운트 시 스타일 적용
+    const [isVisible, setIsVisible] = useState(false); // 검색 언마운트 시 스타일 적용
+    const [menuIsVisible, setMenuIsVisible] = useState(false); // 회원 언마운트 시 스타일 적용
+    const [onMenu, setOnMenu] = useState(false);
 
     useEffect(() => { // windowWidth 업데이트
         const handleSize = () => {
@@ -48,7 +51,8 @@ export default function NavBar ({ isStyle, isDark, setIsDark }) {
                     /> : 
                     <img src={moon} 
                         onClick={() => setIsDark(true)}
-                    />}
+                    />
+                }
                 <img    
                     src={search}              
                     onClick={() => {
@@ -65,16 +69,40 @@ export default function NavBar ({ isStyle, isDark, setIsDark }) {
                 />
                 {onSearch ? <Search isVisible={isVisible} setIsVisible={setIsVisible} setOnSearch={setOnSearch}/> : null}
                 <div className="flex flex-row gap-4 headerBtns">
+                    {isLogin ? null
+                    :
                     <button className="bg-transparent border-2 w-[80px] h-[40px] rounded-md"
                         onClick={() => {
                             navigate('/login')
                         }}
                     >로그인</button>
+                    }
+
+                    {isLogin ? 
+                    <div className="w-[50px] h-[50px] flex justify-center items-center"
+                        onClick={() => {
+                            if (onMenu) {
+                                setMenuIsVisible(false)
+                                setTimeout(() => {
+                                    setOnMenu(false)
+                                }, 300)
+                            } else {
+                                setMenuIsVisible(true)
+                                setOnMenu(true)
+                            }
+                        }}
+                    >
+                        <img src={user} />
+                    </div>
+                    :
                     <button className="bg-transparent border-2 w-[80px] h-[40px] rounded-md"
                         onClick={() => {
                             navigate('/signup')
                         }}
-                    >회원가입</button>
+                    >회원가입</button> 
+                    }
+
+                    {onMenu ? <Menu menuIsVisible={menuIsVisible} setIsLogin={setIsLogin} setOnMenu={setOnMenu}/> : null}
                 </div>
             </div>
         </div>

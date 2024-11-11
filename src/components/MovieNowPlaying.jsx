@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { BASE_URL, API_READ_ACCESS_TOKEN, IMG_BASE_URL } from '../../config.js'
+import { IMG_BASE_URL } from '../../config.js'
 import { useNavigate } from "react-router-dom";
+import useFetch from "../hooks/useFetch.js";
 
 export default function MovieNowPlaying () {
-    const [moviePlayingDatas, setMoviePlayingDatas] = useState([]);
     const [randomMovieData, setRandomMovieData] = useState([]);
     const navigate = useNavigate();
 
@@ -12,27 +12,11 @@ export default function MovieNowPlaying () {
         navigate(`/details/${randomMovieData.id}`);
     };
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch(`${BASE_URL}/movie/now_playing?language=ko-KR`, {
-                    method: 'GET',
-                    headers: {
-                        Authorization: `Bearer ${API_READ_ACCESS_TOKEN}`,
-                        accept: 'application/json',
-                    },
-                })
-                const data = await response.json()
+    const {data} = useFetch(
+        `/movie/now_playing?language=ko-KR`
+    )
 
-                setMoviePlayingDatas(data.results)
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        }
-
-        fetchData();
-    }, []) 
-
+    const moviePlayingDatas = data.results || []; // 기본값 설정 -> randomData를 받아올 때 오류 발생 방지
 
     useEffect(() => {
         if (moviePlayingDatas.length > 0) {
@@ -41,22 +25,21 @@ export default function MovieNowPlaying () {
         }
     }, [moviePlayingDatas]);
 
-    console.log(randomMovieData)
-    const backgroundStyle = {
+    const backgroundStyle = moviePlayingDatas ? {
         backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(${IMG_BASE_URL}${randomMovieData.backdrop_path})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-    };
+    } : null;
 
     return (
-        <div className="w-full h-[570px] text-white flex flex-col justify-end gap-5 p-10 text-[14px] xs:text-[19px]"
+        <div className="w-full h-[570px] xl:h-[720px] text-white flex flex-col justify-end gap-5 p-10 text-[14px] xs:text-[19px]"
             style={backgroundStyle}
             onClick={handleClick}
         >
             <p className="text-[30px] xs:text-[45px] font-extrabold">{randomMovieData.title}</p>
-            <p>개봉일 / {randomMovieData.release_date}</p>
-            <p>{randomMovieData.overview}</p>
-            <p>⭐ {randomMovieData.vote_average}</p>
+            <p>개봉일 / {randomMovieData.release_date ? randomMovieData.release_date : '정보 없음'}</p>
+            <p>{randomMovieData.overview ? randomMovieData.overview : '줄거리 정보 없음'}</p>
+            <p>⭐ {randomMovieData.vote_average ? randomMovieData.vote_average.toFixed(1) : '정보 없음'}</p>
         </div>
     )
 }

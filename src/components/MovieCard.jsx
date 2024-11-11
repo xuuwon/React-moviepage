@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-export default function MovieCard ({ movieListData, handler }) {
+export default function MovieCard ({ movieListData, handler, isFavorite, setIsFavorite, setFavoriteMovieDatas }) {
     const posterUrl = `https://image.tmdb.org/t/p/w500${movieListData.poster_path}`;
     const navigate = useNavigate();
 
@@ -17,7 +17,10 @@ export default function MovieCard ({ movieListData, handler }) {
             <img src={posterUrl} className="w-full h-[270px] rounded-t-2xl"/>
             <div className="flex flex-col gap-2 items-center mt-2">
                 <p className="text-[19px] text-center mx-1">{movieListData.title}</p>
-                <p>⭐ {movieListData.vote_average.toFixed(1)}</p>
+                <div>
+                    <p>⭐ {movieListData.vote_average.toFixed(1)}</p>
+                    <p></p>
+                </div>
             </div>
         </div>
     )

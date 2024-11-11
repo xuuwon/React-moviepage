@@ -66,6 +66,13 @@ body {
   }
 }
 
+.myPage {
+  &.dark {
+    background-color: #2E2F2F !important;
+    color: white;
+  }
+}
+
 .open {
   animation: slideDown 0.3s ease-out forwards;
 }
@@ -131,8 +138,16 @@ p {
     background-color: #2E2F2F !important;
     color: white;
 
-    button {
+    .loginBtn, .signupBtn {
       background-color: white;
+      color: black;
+    }
+    
+    p {
+      color: white !important;
+    }
+
+    input {
       color: black;
     }
   }

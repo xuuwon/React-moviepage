@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react"
-import { BASE_URL, API_READ_ACCESS_TOKEN } from '../../config.js'
+import { useState } from "react"
 import MovieCard from "./MovieCard";
 import { useDebounce } from "../hooks/useDebounce.js";
 import "../App.scss";
+import useFetch from "../hooks/useFetch.js";
 
 
 export default function Search({ isVisible, setIsVisible, setOnSearch }) {
     const [inputValue, setInputValue] = useState('')
-    const [movieSearchDatas, setMovieSearchDatas] = useState([]);
+    // const [movieSearchDatas, setMovieSearchDatas] = useState([]);
     const debounceValue = useDebounce(inputValue)
     const handler = function () {
         setIsVisible(false)
@@ -15,27 +15,9 @@ export default function Search({ isVisible, setIsVisible, setOnSearch }) {
             setOnSearch(false)
         }, 300)
     }
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch(`${BASE_URL}/search/movie?language=ko-KR&query=${debounceValue}`, {
-                    method: 'GET',
-                    headers: {
-                        Authorization: `Bearer ${API_READ_ACCESS_TOKEN}`,
-                        accept: 'application/json',
-                    },
-                })
-                const data = await response.json()
-
-                setMovieSearchDatas(data.results)
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        }
-
-        fetchData();
-    }, [debounceValue])
+    
+    const {data, loading} = useFetch(`/search/movie?language=ko-KR&query=${debounceValue}`)
+    const movieSearchDatas = data.results || [] // 기본값 설정 -> length 사용 위해 
 
     return (
         <div className={`
@@ -55,9 +37,11 @@ export default function Search({ isVisible, setIsVisible, setOnSearch }) {
                 <img src="src\image\whiteSearch.png" />
             </div>
             <div className="flex flex-wrap h-[90%] text-white gap-6 justify-center mt-[50px] mb-[20px] overflow-y-auto">
-                {movieSearchDatas.length > 0 ? movieSearchDatas.map((movieSearchData) => (
+                {loading ? <p>Loading ...</p> :
+                movieSearchDatas.length > 0 ? movieSearchDatas.map((movieSearchData) => (
                     <MovieCard key={movieSearchData.id} movieListData={movieSearchData} handler={handler}/>
-                )) : null}
+                )) : null
+                }
             </div>
         </div>
     )
