@@ -3,6 +3,7 @@ import MovieCard from "./MovieCard";
 import { useDebounce } from "../hooks/useDebounce.js";
 import "../App.scss";
 import useFetch from "../hooks/useFetch.js";
+import search from '../image/whiteSearch.png'
 
 
 export default function Search({ isVisible, setIsVisible, setOnSearch }) {
@@ -33,7 +34,7 @@ export default function Search({ isVisible, setIsVisible, setOnSearch }) {
                     onChange={(e) => setInputValue(e.target.value)}
                     className="w-[100%] h-[50px] bg-transparent border-b-2 text-[25px] pl-5 outline-none"
                 />
-                <img src="src\image\whiteSearch.png" />
+                <img src={search} />
             </div>
             <div className="flex flex-wrap h-[90%] text-white gap-6 justify-center mt-[50px] mb-[20px] overflow-y-auto">
                 {loading ? <p>Loading ...</p> :

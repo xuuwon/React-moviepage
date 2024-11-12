@@ -32,7 +32,7 @@ export default function MovieNowPlaying () {
     } : null;
 
     return (
-        <div className="w-full h-[570px] xl:h-[720px] text-white flex flex-col justify-end gap-5 p-10 text-[14px] xs:text-[19px]"
+        <div className="w-full h-[500px] xl:h-[650px] text-white flex flex-col justify-end gap-5 p-10 text-[14px] xs:text-[19px]"
             style={backgroundStyle}
             onClick={handleClick}
         >
