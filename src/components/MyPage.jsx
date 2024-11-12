@@ -10,16 +10,13 @@ export default function MyPage({ isDark }) {
     const [userId, setUserId] = useState('');
     const [favoriteDatas, setFavoriteDatas] = useState([]);
     const [movieDetails, setMovieDetails] = useState([]);
-    const { getUser, fetchKakaoUserInfo, user, loginType } = useAuth();
+    const { getUser, user, loginType } = useAuth();
 
     useEffect(() => {
         if (!userId) {
             const getUserInfo = async () => {
-                if (loginType === 'kakao') {
-                    await fetchKakaoUserInfo();
-                } else {
-                    await getUser();
-                }
+                await getUser();
+
                 if (user) {
                     setUserId(user.id);
                 }

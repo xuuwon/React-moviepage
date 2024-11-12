@@ -7,99 +7,83 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
     const [isLogin, setIsLogin] = useState(false);
     const [user, setUser] = useState(null);
-    const [loginType, setLoginType] = useState(null); // 로그인 유형 저장
     const [error, setError] = useState({ name: '', email: '', password: '', confirmPassword: '' });
-    const [loginError, setLoginError] = useState({ email: '', password:'', error: ''});
+    const [loginError, setLoginError] = useState({ email: '', password: '', error: '' });
     const [isError, setIsError] = useState(false)
     const navigate = useNavigate();
 
     useEffect(() => {
         if (!window.Kakao.isInitialized()) {
-          window.Kakao.init("4aa7e415d522ad1e041216beb6f05a75"); // 카카오 앱 키로 SDK 초기화
+            window.Kakao.init("4aa7e415d522ad1e041216beb6f05a75"); // 카카오 앱 키로 SDK 초기화
         }
     }, []);
 
-    // Kakao 로그인 함수
-    const handleKakaoLogin = () => {
-        window.Kakao.Auth.login({
-            success: function (authObj) {
-                console.log("Kakao login successful:", authObj);
-
-                sessionStorage.setItem('kakaoAccessToken', authObj.access_token);
-                fetchKakaoUserInfo();
-                setIsLogin(true);
-                setLoginType("kakao"); // 로그인 유형 설정
-                navigate('/');
-            },
-            fail: function (err) {
-                console.error("Kakao login failed:", err);
-                setError("Kakao login failed");
-            },
+    // Kakao 로그인 요청 함수
+    const handleKakaoLogin = async () => {
+        const { data, error } = await supabase.auth.signInWithOAuth({
+            provider: 'kakao',
         });
+
+        if (error) {
+            console.error('Kakao 로그인 오류:', error.message);
+            return;
+        }
+
+        if (data?.url) {
+            window.location.href = data.url; // Kakao 인증 페이지로 리디렉션
+        }
     };
 
-    // Kakao 사용자 정보 요청 함수
-    const fetchKakaoUserInfo = () => {
-        const token = sessionStorage.getItem('kakaoAccessToken');
-        if (!token) return;
+    // 로그인 후 콜백에서 세션 정보 설정 함수
+    const handleAuthCallback = async () => {
+        const { data: { session }, error } = await supabase.auth.getSession();
 
-        window.Kakao.API.request({
-            url: '/v2/user/me',
-            success: function (response) {
-                console.log("Kakao user info:", response);
-                setUser(response);
-            },
-            fail: function (error) {
-                console.error("Failed to fetch Kakao user info:", error);
-            }
-        });
+        if (error) {
+            console.error('세션 가져오기 오류:', error.message);
+            return;
+        }
+
+        if (session) {
+            // 로그인 상태 업데이트
+            setIsLogin(true);
+            navigate('/'); // 로그인 후 메인 페이지로 이동
+        }
     };
 
     // Supabase 이메일 로그인 함수
     const signIn = async (email, password) => {
+        if (email.trim() === '') {
+            setLoginError({ email: "이메일을 입력해주세요." });
+            return;
+        } else if (password.trim() === '') {
+            setLoginError({ password: "비밀번호를 입력해주세요." });
+            return;
+        }
+
         const { data, error } = await supabase.auth.signInWithPassword({
             email,
             password,
         });
 
-        if (email.trim() === '') {
-            setLoginError({ email: "이메일을 입력해주세요."});
-            return;
-        } else if (password.trim() === '') {
-            setLoginError({ password: "비밀번호를 입력해주세요."});
-            return;
-        }
-
         if (error) {
-            setLoginError({ error: "이메일 또는 비밀번호를 잘못 입력하셨습니다."});
+            setLoginError({ error: "이메일 또는 비밀번호를 잘못 입력하셨습니다." });
         } else {
             setUser(data.user);
             setIsLogin(true);
-            setLoginType("supabase"); // 로그인 유형 설정
-            setLoginError({error: ''})
+            setLoginError({ error: '' })
             navigate('/');
-            sessionStorage.setItem('email', email);
         }
     };
 
-    // 로그아웃 함수 (Kakao와 Supabase 모두 로그아웃 처리)
+    // 로그아웃 함수
     const logOut = async () => {
-        if (loginType === "kakao") {
-            window.Kakao.Auth.logout(() => console.log("Kakao logged out"));
-        }
-
         const { error } = await supabase.auth.signOut();
         if (error) {
-            console.error('Error: ', error.message);
+            console.error('로그아웃 오류:', error.message);
         } else {
-            console.log('Logout successful');
-            setUser(null);
             setIsLogin(false);
-            setLoginError({error: ''});
-            setError({ name: '', email: '', password: '', confirmPassword: '' });
-            sessionStorage.removeItem('kakaoAccessToken');
-            sessionStorage.removeItem('email');
             setLoginType(null);
+            navigate('/'); // 로그아웃 후 로그인 페이지로 이동
         }
     };
 
@@ -107,15 +91,15 @@ export const AuthProvider = ({ children }) => {
     const signUp = async (name, email, password, confirmPassword) => {
         // 유효성 검사
         const hasValidationError = validation(name, email, password, confirmPassword);
-    
+
         if (hasValidationError) {
             console.log('회원가입 중단');
             return; // 유효성 검사 실패 시 중단
         }
-    
+
         // 회원가입 요청
         const { data, error } = await supabase.auth.signUp({ email, password });
-    
+
         if (error) {
             if (error.message.includes("already registered")) {
                 setError({ email: "이미 등록된 이메일입니다." });
@@ -133,7 +117,7 @@ export const AuthProvider = ({ children }) => {
     const validation = (name, email, password, confirmPassword) => {
         const errors = {};
         let hasError = false;
-    
+
         if (name.trim() === '') {
             errors.name = "이름을 정확히 입력해 주세요.";
             hasError = true;
@@ -150,27 +134,38 @@ export const AuthProvider = ({ children }) => {
             errors.confirmPassword = "비밀번호가 일치하지 않습니다.";
             hasError = true;
         }
-    
+
         setError(errors); // 오류 메시지 업데이트
         setIsError(hasError); // 오류 여부 설정
-    
+
         return hasError;
     };
-    
-    // 새로고침 시 세션 확인 및 사용자 정보 로드
-    useEffect(() => {
-        const accessToken = sessionStorage.getItem('kakaoAccessToken');
-        const email = sessionStorage.getItem('email');
 
-        if (accessToken) {
-            setIsLogin(true);
-            setLoginType("kakao");
-            fetchKakaoUserInfo(); // Kakao 사용자 정보 요청
-        } else if (email) {
-            setIsLogin(true);
-            setLoginType("supabase");
-            getUser(); // Supabase 사용자 정보 요청
-        }
+    // 페이지 로드 시 쿠키 기반 세션 복원
+    useEffect(() => {
+        const restoreSession = async () => {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (session) {
+                setUser(session.user)
+                setIsLogin(true);
+                setLoginType(session.user.app_metadata.provider);
+            }
+        };
+
+        restoreSession();
+
+        // 세션 상태가 변경될 때마다 로그인 상태 업데이트
+        const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
+            if (session) {
+                setIsLogin(true);
+            } else {
+                setIsLogin(false);
+            }
+        });
+
+        return () => {
+            authListener?.unsubscribe();
+        };
     }, []);
 
     const getUser = async () => {
@@ -179,7 +174,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ isLogin, loginType, setIsLogin, fetchKakaoUserInfo, user, error, setError, loginError, handleKakaoLogin, signIn, logOut, getUser, signUp, validation, setLoginError }}>
+        <AuthContext.Provider value={{ handleAuthCallback, isLogin, setIsLogin, user, error, setError, loginError, handleKakaoLogin, signIn, logOut, getUser, signUp, validation, setLoginError }}>
             {children}
         </AuthContext.Provider>
     );

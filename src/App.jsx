@@ -9,6 +9,7 @@ import Login from './components/Login';
 import NavBar from './components/NavBar';
 import MyPage from './components/MyPage';
 import { AuthProvider } from './AuthContext';
+import AuthCallback from './AuthCallback';
 
 function App() {
   const [isStyle, setIsStyle] = useState(false);
@@ -24,6 +25,7 @@ function App() {
         <Route path="/signup" element={<Signup setIsStyle={setIsStyle} isDark={isDark} />} />
         <Route path="/login" element={<Login setIsStyle={setIsStyle} isDark={isDark} />} />
         <Route path="/mypage" element={<MyPage isFavorite={isFavorite} setIsFavorite={setIsFavorite} isDark={isDark}/>} />
+        <Route path='/auth/v1/callback' element={<AuthCallback />} />
       </Routes>
     </AuthProvider>
   );

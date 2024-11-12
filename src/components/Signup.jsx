@@ -11,7 +11,7 @@ export default function Signup({ setIsStyle, isDark }) {
         return () => setIsStyle(false);
     }, [setIsStyle]);
 
-    const { signUp, error, setError, validation } = useAuth(); // signUp 함수와 에러 상태 가져오기
+    const { signUp, error, setError } = useAuth(); // signUp 함수와 에러 상태 가져오기
 
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -35,7 +35,7 @@ export default function Signup({ setIsStyle, isDark }) {
         <div className={`w-[100vw] h-[100vh] flex flex-col items-center justify-center gap-[40px] signup
             ${isDark ? "dark" : ""}`
         }>  
-            {onModal ? <div className="w-[300px] h-[200px] bg-white border-2 absolute">
+            {onModal ? <div className="w-[300px] h-[200px] bg-white border-2 absolute z-10">
                 <p className="absolute top-2 right-4"
                     onClick={() => {
                         setOnModal(false)
