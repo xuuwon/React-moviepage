@@ -61,12 +61,10 @@ export default function MyPage({ isDark }) {
         }
     }, [favoriteDatas]);
 
-    console.log(movieDetails)
-
     return (
         <div className={`${isDark ? "dark" : ""} myPage w-full`}>
-            <p className="top-[200px] left-[70px] mx-auto text-[30px] absolute popularText">북마크</p>
-            <div className="pt-[250px]">
+            <p className="mx-auto text-[30px] popularText pt-[150px] pl-[50px]">북마크</p>
+            <div>
                 <div className='cards' style={{
                     display: 'flex',
                     flexWrap: 'wrap',

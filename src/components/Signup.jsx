@@ -60,7 +60,6 @@ export default function Signup({ setIsStyle, isDark }) {
                         setName(e.target.value);
                         setError((prev) => ({ ...prev, name: '' })); // 에러 초기화
                     }}
-                    // onBlur={() => {if(name.trim()) validation(name, email, password, confirmPassword)}}
                     className="w-[400px] h-[40px] outline-none border border-b-[#9ca0a0] pl-5"
                     placeholder="Name"
                 />
@@ -74,7 +73,6 @@ export default function Signup({ setIsStyle, isDark }) {
                         setEmail(e.target.value);
                         setError((prev) => ({ ...prev, email: '' })); // 에러 초기화
                     }}
-                    // onBlur={() => {if(email.trim() !== '') validation(name, email, password, confirmPassword)}}
                     className="w-[400px] h-[40px] outline-none border border-b-[#9ca0a0] pl-5"
                     placeholder="Email"
                 />
@@ -88,7 +86,6 @@ export default function Signup({ setIsStyle, isDark }) {
                         setPassword(e.target.value);
                         setError((prev) => ({ ...prev, password: '' })); // 에러 초기화
                     }}
-                    // onBlur={() => {if(password.trim()) validation(name, email, password, confirmPassword)}}
                     className="w-[400px] h-[40px] outline-none border border-b-[#9ca0a0] pl-5"
                     placeholder="Password"
                 />
@@ -102,7 +99,6 @@ export default function Signup({ setIsStyle, isDark }) {
                         setConfirmPassword(e.target.value);
                         setError((prev) => ({ ...prev, confirmPassword: '' })); // 에러 초기화
                     }}
-                    // onBlur={() => {if(confirmPassword.trim()) validation(name, email, password, confirmPassword)}}
                     className="w-[400px] h-[40px] outline-none border border-b-[#9ca0a0] pl-5"
                     placeholder="Confirm Password"
                 />
