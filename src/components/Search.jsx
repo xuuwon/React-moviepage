@@ -32,7 +32,7 @@ export default function Search({ isVisible, setIsVisible, setOnSearch }) {
                     type="text"
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
-                    className="w-[100%] h-[40px] bg-transparent border-b-2 text-[25px] pl-5 outline-none"
+                    className="w-[80%] h-[50px] bg-transparent border-b-2 text-[25px] pl-5 outline-none"
                 />
                 <img src={search} />
             </div>
