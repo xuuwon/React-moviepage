@@ -27,14 +27,14 @@ export default function Search({ isVisible, setIsVisible, setOnSearch }) {
             flex flex-col items-center
             `}
         >
-            <div className="flex items-center gap-5">
+            <div className="flex items-center gap-5 justify-center">
                 <input
                     type="text"
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
-                    className="w-[80%] h-[50px] bg-transparent border-b-2 text-[25px] pl-5 outline-none"
+                    className="xs:w-[100%] w-[60%] h-[50px] bg-transparent border-b-2 text-[25px] pl-5 outline-none"
                 />
-                <img src={search} />
+                <img src={search} className="w-[25px] xs:w-[30px]"/>
             </div>
             <div className="flex flex-wrap h-[90%] text-white gap-6 justify-center mt-[50px] mb-[20px] overflow-y-auto">
                 {loading ? <p>Loading ...</p> :
