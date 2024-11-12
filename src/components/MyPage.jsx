@@ -4,19 +4,29 @@ import supabase from "../supabaseClient";
 import { BASE_URL, API_READ_ACCESS_TOKEN } from '../../config.js'
 import MovieCard from "./MovieCard";
 import '../App.scss';
+import { useAuth } from "../AuthContext.jsx";
 
 export default function MyPage({ isDark }) {
     const [userId, setUserId] = useState('');
     const [favoriteDatas, setFavoriteDatas] = useState([]);
     const [movieDetails, setMovieDetails] = useState([]);
+    const { getUser, fetchKakaoUserInfo, user, loginType } = useAuth();
 
     useEffect(() => {
-        const getUser = async () => {
-            const { data: { user } } = await supabase.auth.getUser();
-            if (user) setUserId(user.id);
-        };
-        getUser();
-    }, []); // 컴포넌트가 처음 렌더링될 때 한 번 실행
+        if (!userId) {
+            const getUserInfo = async () => {
+                if (loginType === 'kakao') {
+                    await fetchKakaoUserInfo();
+                } else {
+                    await getUser();
+                }
+                if (user) {
+                    setUserId(user.id);
+                }
+            };
+            getUserInfo();
+        }
+    }, [userId, loginType, user]);
 
     useEffect(() => {
         const getBookmark = async () => {
@@ -54,18 +64,20 @@ export default function MyPage({ isDark }) {
     console.log(movieDetails)
 
     return (
-        <div className={`${isDark ? "dark" : ""} myPage`}>
-            <p className="pt-[160px] w-[90%] mx-auto text-[30px] popularText">북마크</p>
-            <div className='cards' style={{
-                display: 'flex',
-                flexWrap: 'wrap',
-                gap: '20px',
-                justifyContent: 'space-around',
-                padding: '40px',
-                overflow: 'auto'
-            }}>{movieDetails.map((movieListData) => (
-                <MovieCard key={movieListData.id} movieListData={movieListData} />
-            ))}
+        <div className={`${isDark ? "dark" : ""} myPage w-full`}>
+            <p className="top-[200px] left-[70px] mx-auto text-[30px] absolute popularText">북마크</p>
+            <div className="pt-[250px]">
+                <div className='cards' style={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    justifyContent: 'center',
+                    padding: '40px',
+                    gap: '20px',
+                    overflow: 'auto'
+                }}>{movieDetails.map((movieListData) => (
+                    <MovieCard key={movieListData.id} movieListData={movieListData} />
+                ))}
+                </div>
             </div>
         </div>
     )

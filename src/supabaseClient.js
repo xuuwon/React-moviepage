@@ -16,6 +16,4 @@ export async function signOut() { // 로그아웃
     }
 }
   
-  
-
 export default supabase;

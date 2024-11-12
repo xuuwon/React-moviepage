@@ -1,11 +1,8 @@
 import { useNavigate } from "react-router-dom";
-import { handleKakaoLogout } from "../kakaoLogin";
-import { signOut } from "../supabaseClient";
+import { useAuth } from "../AuthContext";
 
 export default function Menu ({ menuIsVisible, setIsLogin, setOnMenu }) {
-    const handleSignOut = async () => {
-        await signOut();
-    };
+    const { logOut } = useAuth();
     const navigate = useNavigate();
 
     return (
@@ -23,9 +20,8 @@ export default function Menu ({ menuIsVisible, setIsLogin, setOnMenu }) {
             <button
                 onClick={() => {
                     setIsLogin(false);
-                    handleSignOut();
-                    handleKakaoLogout();
                     setOnMenu(false);
+                    logOut();
                     navigate('/')
                 }}
             >로그아웃</button>

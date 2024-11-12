@@ -1,49 +1,43 @@
 import { useEffect, useState } from 'react';
 import '../index.css';
 import '../App.scss';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { IMG_BASE_URL } from '../../config.js';
 import useFetch from '../hooks/useFetch.js';
-import supabase from '../supabaseClient.js';
 import { addBookmark, deleteBookmark, fetchBookmarks } from '../bookmark.js';
+import { useAuth } from '../AuthContext.jsx';
 
 export default function MovieDetail() {
     const { id } = useParams(); // id값에 접근
-    const [userId, setUserId] = useState('');
     const [bookmarkDatas, setBookmarkDatas] = useState([]);
+    const navigate = useNavigate();
+    const { user } = useAuth();
 
     const { data: movieDetailDatas } = useFetch(`/movie/${id}?language=ko-KR`);
 
-    useEffect(() => {
-        const getUser = async () => {
-            const { data: { user } } = await supabase.auth.getUser();
-            if (user) setUserId(user.id);
-        };
-        getUser();
-    }, []); // 컴포넌트가 처음 렌더링될 때 한 번 실행
-
     useEffect(() => { 
         const getBookmark = async () => {
-            const data = await fetchBookmarks(userId);
+            const data = await fetchBookmarks(user.id);
             setBookmarkDatas(data || []); // 데이터가 없으면 빈 배열로 설정
         }
-        if (userId) getBookmark();
-    }, [userId]);
+        if (user.id) getBookmark();
+    }, [user.id]);
 
     const handleAddBookmark = async () => {
-        if (userId) {
-            await addBookmark(id, userId);
-            const updatedBookmarks = await fetchBookmarks(userId);
+        if (user.id) {
+            await addBookmark(id, user.id);
+            const updatedBookmarks = await fetchBookmarks(user.id);
             setBookmarkDatas(updatedBookmarks || []);
         } else {
-            console.log('login plz');
+            alert('로그인을 해주세요.')
+            navigate('/login');
         }
     };
 
     const handleDeleteBookmark = async () => {
-        if (userId) {
-            await deleteBookmark(id, userId);
-            const updatedBookmarks = await fetchBookmarks(userId);
+        if (user.id) {
+            await deleteBookmark(id, user.id);
+            const updatedBookmarks = await fetchBookmarks(user.id);
             setBookmarkDatas(updatedBookmarks || []);
         }
     };

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import MovieSlider from "./MovieSlider";
 import MovieCard from "./MovieCard";
 import '../App.scss';
@@ -14,8 +14,6 @@ export default function Main({ isDark }) {
     );
 
     const movieListDatas = data.results || []
-
-    console.log(movieListDatas.filter(data => data.overview === ''))
 
     return (
         <div>

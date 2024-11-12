@@ -7,14 +7,16 @@ import moon from '../image/moon.png'
 import search from '../image/whiteSearch.png'
 import user from '../image/user.png'
 import Menu from "./Menu";
+import { useAuth } from "../AuthContext";
 
-export default function NavBar ({ isStyle, isDark, setIsDark, isLogin, setIsLogin }) {
+export default function NavBar ({ isStyle, isDark, setIsDark }) {
     const navigate = useNavigate();
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
     const [onSearch, setOnSearch] = useState(false);
     const [isVisible, setIsVisible] = useState(false); // 검색 언마운트 시 스타일 적용
     const [menuIsVisible, setMenuIsVisible] = useState(false); // 회원 언마운트 시 스타일 적용
     const [onMenu, setOnMenu] = useState(false);
+    const { isLogin, setIsLogin  } = useAuth();
 
     useEffect(() => { // windowWidth 업데이트
         const handleSize = () => {

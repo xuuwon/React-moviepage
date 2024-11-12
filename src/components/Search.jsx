@@ -7,7 +7,6 @@ import useFetch from "../hooks/useFetch.js";
 
 export default function Search({ isVisible, setIsVisible, setOnSearch }) {
     const [inputValue, setInputValue] = useState('')
-    // const [movieSearchDatas, setMovieSearchDatas] = useState([]);
     const debounceValue = useDebounce(inputValue)
     const handler = function () {
         setIsVisible(false)
