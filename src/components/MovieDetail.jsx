@@ -15,6 +15,13 @@ export default function MovieDetail() {
 
     const { data: movieDetailDatas } = useFetch(`/movie/${id}?language=ko-KR`);
 
+    useEffect(() => {
+        document.body.scrollTo({
+            top: 0,
+            left: 0
+        });
+    }, [])
+
     useEffect(() => { 
         const getBookmark = async () => {
             const data = await fetchBookmarks(user.id);
