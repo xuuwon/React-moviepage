@@ -20,11 +20,11 @@ export default function MovieDetail() {
             const data = await fetchBookmarks(user.id);
             setBookmarkDatas(data || []); // 데이터가 없으면 빈 배열로 설정
         }
-        if (user.id) getBookmark();
-    }, [user.id]);
+        if (user?.id) getBookmark();
+    }, [user]);
 
     const handleAddBookmark = async () => {
-        if (user.id) {
+        if (user?.id) {
             await addBookmark(id, user.id);
             const updatedBookmarks = await fetchBookmarks(user.id);
             setBookmarkDatas(updatedBookmarks || []);
@@ -35,7 +35,7 @@ export default function MovieDetail() {
     };
 
     const handleDeleteBookmark = async () => {
-        if (user.id) {
+        if (user?.id) {
             await deleteBookmark(id, user.id);
             const updatedBookmarks = await fetchBookmarks(user.id);
             setBookmarkDatas(updatedBookmarks || []);
