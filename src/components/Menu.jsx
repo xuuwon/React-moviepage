@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 
 export default function Menu ({ menuIsVisible, setIsLogin, setOnMenu }) {
-    const { logOut } = useAuth();
+    const { logOut, setUser } = useAuth();
     const navigate = useNavigate();
 
     return (
@@ -21,6 +21,7 @@ export default function Menu ({ menuIsVisible, setIsLogin, setOnMenu }) {
                     setIsLogin(false);
                     setOnMenu(false);
                     logOut();
+                    setUser(null);
                     navigate('/')
                 }}
             >로그아웃</button>
